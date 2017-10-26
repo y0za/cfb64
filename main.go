@@ -22,15 +22,12 @@ func encodeHandler(c *cli.Context) error {
 		return cli.NewExitError(m, 1)
 	}
 
+	r := base64.StdEncoding.EncodeToString(data)
 	if c.Bool("uri") {
 		mime := http.DetectContentType(data)
-		fmt.Printf("data:%s;base64,", mime)
+		r = fmt.Sprintf("data:%s;base64,", mime) + r
 	}
-
-	_, err = base64.NewEncoder(base64.StdEncoding, os.Stdout).Write(data)
-	if err != nil {
-		return cli.NewExitError("fail to encode base64", 1)
-	}
+	fmt.Print(r)
 
 	return nil
 }
