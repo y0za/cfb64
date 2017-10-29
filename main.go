@@ -11,23 +11,27 @@ import (
 )
 
 func encodeHandler(c *cli.Context) error {
-	path := c.Args().Get(0)
-	if path == "" {
+	if c.NArg() == 0 {
 		return cli.NewExitError("must specify file path", 1)
 	}
 
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
-		m := fmt.Sprintf("can't open %s", path)
-		return cli.NewExitError(m, 1)
-	}
+	args := c.Args()
+	for i := 0; i < c.NArg(); i++ {
+		path := args.Get(0)
 
-	r := base64.StdEncoding.EncodeToString(data)
-	if c.Bool("uri") {
-		mime := http.DetectContentType(data)
-		r = fmt.Sprintf("data:%s;base64,", mime) + r
+		data, err := ioutil.ReadFile(path)
+		if err != nil {
+			m := fmt.Sprintf("can't open %s", path)
+			return cli.NewExitError(m, 1)
+		}
+
+		r := base64.StdEncoding.EncodeToString(data)
+		if c.Bool("uri") {
+			mime := http.DetectContentType(data)
+			r = fmt.Sprintf("data:%s;base64,", mime) + r
+		}
+		fmt.Println(r)
 	}
-	fmt.Print(r)
 
 	return nil
 }
