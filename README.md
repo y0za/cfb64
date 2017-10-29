@@ -11,7 +11,7 @@ USAGE:
    cfb64 [global options] command [command options] [arguments...]
 
 VERSION:
-   0.0.1
+   0.1.0
 
 COMMANDS:
      encode, e  Encode file to Base64

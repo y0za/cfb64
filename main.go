@@ -40,7 +40,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "cfb64"
 	app.Usage = "convert file to/from Base64"
-	app.Version = "0.0.1"
+	app.Version = "0.1.0"
 	app.Commands = []cli.Command{
 		{
 			Name:    "encode",
