@@ -17,7 +17,7 @@ func encodeHandler(c *cli.Context) error {
 
 	args := c.Args()
 	for i := 0; i < c.NArg(); i++ {
-		path := args.Get(0)
+		path := args.Get(i)
 
 		data, err := ioutil.ReadFile(path)
 		if err != nil {
