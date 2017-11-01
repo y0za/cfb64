@@ -36,6 +36,31 @@ func encodeHandler(c *cli.Context) error {
 	return nil
 }
 
+func decodeHandler(c *cli.Context) error {
+	if c.NArg() == 0 {
+		return cli.NewExitError("must specify file path", 1)
+	}
+	path := c.Args().Get(0)
+
+	in, err := ioutil.ReadAll(os.Stdin)
+	if err != nil {
+		return cli.NewExitError("can't read stdin", 1)
+	}
+
+	data, err := base64.StdEncoding.DecodeString(string(in))
+	if err != nil {
+		return cli.NewExitError("fail to decode", 1)
+	}
+
+	err = ioutil.WriteFile(path, data, 0644)
+	if err != nil {
+		m := fmt.Sprintf("can't write data to %s", path)
+		return cli.NewExitError(m, 1)
+	}
+
+	return nil
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "cfb64"
@@ -53,6 +78,12 @@ func main() {
 				},
 			},
 			Action: encodeHandler,
+		},
+		{
+			Name:    "decode",
+			Aliases: []string{"d"},
+			Usage:   "Decode Base64 to file",
+			Action:  decodeHandler,
 		},
 	}
 
