@@ -23,6 +23,12 @@ GLOBAL OPTIONS:
    --version, -v  print the version
 ```
 
+### Example
+It is useful when you want to send Base64 data with curl.
+```console
+$ cfb64 e --uri image.jpg | xargs printf '{"image": "%s"}' | curl -X POST --data @- http://localhost/api/images
+```
+
 ## Installation
 ```
 $ go get github.com/y0za/cfb64
